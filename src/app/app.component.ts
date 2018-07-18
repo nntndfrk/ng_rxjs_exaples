@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {interval, merge} from 'rxjs';
+import {concat, interval} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   template: `
     <h4>RxJS Examples</h4>
-    <p>merge()</p>
+    <p>concat()</p>
   `,
 })
 export class AppComponent implements OnInit {
@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
         take(5)
       );
 
-    merge(stream1$, stream2$)
+    concat(stream1$, stream2$)
       .subscribe(data => console.log(data));
   }
 
