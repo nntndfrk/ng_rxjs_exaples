@@ -7,6 +7,7 @@ import {map, mergeAll, take} from 'rxjs/operators';
   template: `
     <h4>RxJS Examples</h4>
     <p>mergeAll()</p>
+    <p style="color: crimson">click!</p>
   `,
 })
 export class AppComponent implements OnInit {
