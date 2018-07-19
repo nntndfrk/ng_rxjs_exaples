@@ -6,7 +6,7 @@ import {take} from 'rxjs/operators';
   selector: 'app-root',
   template: `
     <h4>RxJS Examples</h4>
-    <p>cold Observable</p>
+    <p>hot Observable</p>
   `,
 })
 export class AppComponent implements OnInit {
