@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
     source$.subscribe(x => console.log('from first subscription - ', x));
     setTimeout(() => {
       source$.subscribe(x => console.log('from second subscription - ', x));
-    }, 2000);
+    }, 1000);
   }
 
 }
