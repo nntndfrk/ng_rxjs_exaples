@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {fromEvent, interval} from 'rxjs';
-import {map, mergeAll, take} from 'rxjs/operators';
+import {concatAll, map, take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   template: `
     <h4>RxJS Examples</h4>
-    <p>mergeAll()</p>
+    <p>concatAll()</p>
   `,
 })
 export class AppComponent implements OnInit {
@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
       map(() => interval(500).pipe(take(5))),
     );
     const firstOrder = higherOrder.pipe(
-      mergeAll(),
+      concatAll(),
       map(x => x + 1),
     );
     firstOrder.subscribe(x => console.log(x));
