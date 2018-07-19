@@ -1,24 +1,23 @@
 import {Component, OnInit} from '@angular/core';
 import {interval} from 'rxjs';
-import {concatMap, map, take} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   template: `
     <h4>RxJS Examples</h4>
-    <p>concatMap()</p>
+    <p>cold Observable</p>
   `,
 })
 export class AppComponent implements OnInit {
 
   ngOnInit() {
-    const s1$ = interval(1000).pipe(take(3));
-    const s2$ = interval(500).pipe(take(3));
+    const source$ = interval(500).pipe(take(5));
 
-    s1$.pipe(concatMap((s1Value) => {
-          return s2$.pipe(map(s2Value => `s1Value - ${s1Value} : s2Value - ${s2Value}`));
-        }))
-      .subscribe(x => console.log(x));
+    source$.subscribe(x => console.log('from first subscription - ', x));
+    setTimeout(() => {
+      source$.subscribe(x => console.log('from second subscription - ', x));
+    }, 2000);
   }
 
 }
