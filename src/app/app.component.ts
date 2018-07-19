@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {interval} from 'rxjs';
+import {interval, Subject} from 'rxjs';
 import {take} from 'rxjs/operators';
 
 @Component({
@@ -12,7 +12,13 @@ import {take} from 'rxjs/operators';
 export class AppComponent implements OnInit {
 
   ngOnInit() {
-    const source$ = interval(500).pipe(take(5));
+    const source$ = new Subject();
+
+    interval(500)
+      .pipe(take(10))
+      .subscribe(x => {
+        source$.next(x);
+      });
 
     source$.subscribe(x => console.log('from first subscription - ', x));
     setTimeout(() => {
