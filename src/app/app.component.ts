@@ -1,26 +1,30 @@
 import {Component, OnInit} from '@angular/core';
-import {fromEvent, interval} from 'rxjs';
-import {map, mergeAll, take} from 'rxjs/operators';
+import {interval} from 'rxjs';
+import {map, mergeMap, take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   template: `
     <h4>RxJS Examples</h4>
-    <p>mergeAll()</p>
+    <p>mergeMap()</p>
   `,
 })
 export class AppComponent implements OnInit {
 
   ngOnInit() {
-    const clicks = fromEvent(document, 'click');
-    const higherOrder = clicks.pipe(
-      map(() => interval(500).pipe(take(5))),
-    );
-    const firstOrder = higherOrder.pipe(
-      mergeAll(),
-      map(x => x + 1),
-    );
-    firstOrder.subscribe(x => console.log(x));
+    const s1$ = interval(1000).pipe(take(3));
+    const s2$ = interval(500).pipe(take(3));
+
+    // s1$.subscribe(s1Value => {
+    //   s2$.subscribe(s2Value => {
+    //     console.log(`s1Value - ${s1Value} : s2Value - ${s2Value}`);
+    //   });
+    // });
+
+    s1$.pipe(mergeMap((s1Value) => {
+          return s2$.pipe(map(s2Value => `s1Value - ${s1Value} : s2Value - ${s2Value}`));
+        }))
+      .subscribe(x => console.log(x));
   }
 
 }
