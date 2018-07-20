@@ -15,9 +15,9 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) {}
   ngOnInit() {
     const dataStream = forkJoin(
-      this.http.get('http://5b51cffc6ecd1b0014aa3607.mockapi.io/data'),
+      this.http.get('./assets/data-1.json'),
       this.http
-        .get('http://5b51cffc6ecd1b0014aa3607.mockapi.io/otherdata')
+        .get('./assets/data-2.json')
         .pipe(
           delay(2000) // эмуляция задержка ответа на 2 секунды
         )
