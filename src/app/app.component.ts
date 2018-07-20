@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AsyncSubject, interval} from 'rxjs';
-import {take} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
+import {forkJoin} from 'rxjs';
+import {delay} from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-root',
@@ -10,26 +12,20 @@ import {take} from 'rxjs/operators';
   `,
 })
 export class AppComponent implements OnInit {
-
+  constructor(private http: HttpClient) {}
   ngOnInit() {
-    const source$ = new AsyncSubject();
+    const dataStream = forkJoin(
+      this.http.get('http://5b51cffc6ecd1b0014aa3607.mockapi.io/data'),
+      this.http
+        .get('http://5b51cffc6ecd1b0014aa3607.mockapi.io/otherdata')
+        .pipe(
+          delay(2000) // эмуляция задержка ответа на 2 секунды
+        )
+    );
 
-    interval(500)
-      .pipe(take(10))
-      .subscribe(
-        x => {
-          source$.next(x);
-        },
-        null,
-        () => {
-          source$.complete();
-        }
-      );
-
-    source$.subscribe(x => console.log('from first subscription - ', x));
-    setTimeout(() => {
-      source$.subscribe(x => console.log('from second subscription - ', x));
-    }, 2000);
+    dataStream.subscribe(data => {
+      console.log(data);
+    });
   }
 
 }
