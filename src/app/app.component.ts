@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {forkJoin} from 'rxjs';
-import {delay} from 'rxjs/operators';
+import {Observable, interval, merge, of, from, range} from 'rxjs';
+import {map, take} from 'rxjs/operators';
 
 
 @Component({
@@ -12,20 +11,30 @@ import {delay} from 'rxjs/operators';
   `,
 })
 export class AppComponent implements OnInit {
-  constructor(private http: HttpClient) {}
   ngOnInit() {
-    const dataStream = forkJoin(
-      this.http.get('http://5b51cffc6ecd1b0014aa3607.mockapi.io/data'),
-      this.http
-        .get('http://5b51cffc6ecd1b0014aa3607.mockapi.io/otherdata')
-        .pipe(
-          delay(2000) // эмуляция задержка ответа на 2 секунды
-        )
-    );
 
-    dataStream.subscribe(data => {
-      console.log(data);
-    });
+    // const observable = Observable.create((observer) => {
+    //   observer.next('Hello');
+    //   observer.next('our');
+    //   setTimeout(() => {
+    //     observer.next('World');
+    //     observer.complete();
+    //   }, 2000);
+    // });
+    // const observable = of('first', 1, 2, 3, 4, 'last');
+    const observable = interval(1500).pipe(
+      map(item => {
+        return item + '-item';
+      })
+    );
+    // const observable = from([1, 2, 3, 4, 5, {}]);
+    // const observable = range(5,10);
+
+    const subscription = observable.subscribe(
+      value => console.log(value),
+      error => console.log(error),
+      () => console.log('Complete.')
+    );
   }
 
 }
