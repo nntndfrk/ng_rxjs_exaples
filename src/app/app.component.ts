@@ -8,7 +8,7 @@ import {delay} from 'rxjs/operators';
   selector: 'app-root',
   template: `
     <h4>RxJS Examples</h4>
-    <p>AsyncSubject</p>
+    <p>forkJoin()</p>
   `,
 })
 export class AppComponent implements OnInit {
