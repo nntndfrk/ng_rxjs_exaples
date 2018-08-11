@@ -1,34 +1,46 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable, interval, merge, of, from, range} from 'rxjs';
-import {map, take} from 'rxjs/operators';
-
+import {map, take, pluck, findIndex, find} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   template: `
     <h4>RxJS Examples</h4>
-    <p>forkJoin()</p>
+    <p>Pipeable Operators</p>
   `,
 })
 export class AppComponent implements OnInit {
   ngOnInit() {
 
-    // const observable = Observable.create((observer) => {
-    //   observer.next('Hello');
-    //   observer.next('our');
-    //   setTimeout(() => {
-    //     observer.next('World');
-    //     observer.complete();
-    //   }, 2000);
-    // });
-    // const observable = of('first', 1, 2, 3, 4, 'last');
-    const observable = interval(1500).pipe(
+    // pluck
+    // const observable = from([
+    //   {id: 1, user: {name: 'Alex', lname: 'Smith'}},
+    //   {id: 2, user: {name: 'John', lname: 'Doe'}}
+    // ])
+    // .pipe(
+    //     pluck('user', 'name'),
+    //     map(name => name.toString().toUpperCase())
+    // )
+
+    // map
+    // const observable = interval(1500).pipe(
+    //   map(item => {
+    //     return item + '-item';
+    //   })
+    // );
+    // const observable = from([1, 2, 3, 4, 5]).pipe(
+    //   map(item => {
+    //     return item * 4;
+    //   })
+    // );
+
+    // find, findIndex
+    const observable = from([1, 2, 3, 4, 5]).pipe(
       map(item => {
-        return item + '-item';
-      })
+        return item + ' Find';
+      }),
+      find(x => x === '4 Find')
     );
-    // const observable = from([1, 2, 3, 4, 5, {}]);
-    // const observable = range(5,10);
 
     const subscription = observable.subscribe(
       value => console.log(value),
